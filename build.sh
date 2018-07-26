@@ -18,6 +18,7 @@ export CROSS_COMPILE=$KERNEL_TOOLCHAIN
 export ARCH=arm
 export KBUILD_BUILD_USER="@k$h@y"
 export KBUILD_BUILD_HOST="Jarvis"
+export USE_CCACHE=1
 
 echo ">>>>>>>>>> Kernel defconfig is set to $KERNEL_DEFCONFIG <<<<<<<<<<<<"
 make $KERNEL_DEFCONFIG
