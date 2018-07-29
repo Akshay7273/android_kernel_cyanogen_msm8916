@@ -5,7 +5,6 @@ set -e
 KERNEL_DIR=$PWD
 KERNEL_TOOLCHAIN=~/arm-linux-gnueabi/bin/arm-linux-gnueabi-
 KERNEL_DEFCONFIG=osprey_defconfig
-JOBS=10
 ANY_KERNEL2_DIR=~/Anykernel2/
 DATE=$(date +"%d%m%Y")
 FINAL_KERNEL_ZIP=Paradox-R1-"$DATE"-Osprey.zip
@@ -22,29 +21,25 @@ export USE_CCACHE=1
 
 echo ">>>>>>>>>> Kernel defconfig is set to $KERNEL_DEFCONFIG <<<<<<<<<<<<"
 make $KERNEL_DEFCONFIG
-make -j$JOBS
-
+make -j$( nproc --all ) zImage
 
 echo ">>>>>>>>>>> Verify zImage,dtb & wlan <<<<<<<<<<<"
 ls $KERNEL_DIR/arch/arm/boot/zImage
-ls $KERNEL_DIR/drivers/staging/prima/wlan.ko
 
 echo ">>>>>>>>>>> Verifying Anyernel2 Directory <<<<<<<<<<<<"
 ls $ANY_KERNEL2_DIR
 echo ">>>>>>>>>>>> Removing leftovers <<<<<<<<<<<<"
 rm -rf $ANY_KERNEL2_DIR/zImage
-rm -rf $ANY_KERNEL2_DIR/modules/system/lib/modules/wlan.ko
 rm -rf $ANY_KERNEL2_DIR/$FINAL_KERNEL_ZIP
 
 echo ">>>>>>>>>>> Copying zImage and modules <<<<<<<<<<<<"
-mv $KERNEL_DIR/arch/arm/boot/zImage $ANY_KERNEL2_DIR/
-mv $KERNEL_DIR/drivers/staging/prima/wlan.ko $ANY_KERNEL2_DIR/modules/system/lib/modules/
+cp $KERNEL_DIR/arch/arm/boot/zImage $ANY_KERNEL2_DIR/
 
 echo ">>>>>>>>>>> Making Anykernel zip <<<<<<<<<<<"
 cd $ANY_KERNEL2_DIR/
 zip -r9 $FINAL_KERNEL_ZIP * -x README $FINAL_KERNEL_ZIP
 rm -rf ~/Paradox Release/$FINAL_KERNEL_ZIP
-cp ~/Anykernel2/$FINAL_KERNEL_ZIP ~/Paradox Release/$FINAL_KERNEL_ZIP
+cp ~/Anykernel2/$FINAL_KERNEL_ZIP ~/Paradoxed/$FINAL_KERNEL_ZIP
 
 echo ">>>>>>>>>>> Cleaning leftovers <<<<<<<<<<<<"
 cd $ANY_KERNEL2_DIR
