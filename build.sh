@@ -23,7 +23,7 @@ echo ">>>>>>>>>> Kernel defconfig is set to $KERNEL_DEFCONFIG <<<<<<<<<<<<"
 make $KERNEL_DEFCONFIG
 make -j$( nproc --all ) zImage
 
-echo ">>>>>>>>>>> Verify zImage,dtb & wlan <<<<<<<<<<<"
+echo ">>>>>>>>>>> Verify zImage <<<<<<<<<<<"
 ls $KERNEL_DIR/arch/arm/boot/zImage
 
 echo ">>>>>>>>>>> Verifying Anyernel2 Directory <<<<<<<<<<<<"
@@ -32,7 +32,7 @@ echo ">>>>>>>>>>>> Removing leftovers <<<<<<<<<<<<"
 rm -rf $ANY_KERNEL2_DIR/zImage
 rm -rf $ANY_KERNEL2_DIR/$FINAL_KERNEL_ZIP
 
-echo ">>>>>>>>>>> Copying zImage and modules <<<<<<<<<<<<"
+echo ">>>>>>>>>>> Copying zImage <<<<<<<<<<<<"
 cp $KERNEL_DIR/arch/arm/boot/zImage $ANY_KERNEL2_DIR/
 
 echo ">>>>>>>>>>> Making Anykernel zip <<<<<<<<<<<"
